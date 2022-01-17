@@ -1,0 +1,17 @@
+.div_container {
+  height: 500px;
+  width: 500px;
+  display: inline;
+  background-color: blue;
+  vertical-align: middle;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  background-color: green;
+}
+html {
+  background-color: gray;
+}
