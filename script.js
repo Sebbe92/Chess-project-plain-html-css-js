@@ -3,6 +3,15 @@ const input = document.querySelector("textarea");
 const output = document.querySelector("ul");
 const divContainer = document.querySelector(".div_container");
 
+const url = "https://www.portabooth.digital/square-eyes/wp-json";
+
+async function callApi(url) {
+  const response = await fetch(url);
+  const results = await response.json();
+  return results;
+}
+
+console.log(callApi(url));
 /* button.onclick = outputFunction;
 
 function outputFunction() {
