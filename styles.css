@@ -1,17 +1,58 @@
-.div_container {
-  height: 500px;
-  width: 500px;
-  display: inline;
-  background-color: blue;
-  vertical-align: middle;
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#chess-container {
+  height: fit-content;
+  display: flex;
+  max-width: calc(50px * 8);
+}
+.piece {
+  max-width: 45px;
+  max-height: 45px;
 }
 
-body {
+.black-piece {
+  color: black;
+}
+.square {
+  width: 50px;
+  height: 50px;
+  background-color: rgb(242, 242, 242);
+  border: 1px solid transparent;
   display: flex;
   justify-content: center;
-  height: 100vh;
-  background-color: green;
+  align-items: center;
+  cursor: pointer;
 }
-html {
-  background-color: gray;
+.row:nth-child(odd) .square:nth-child(even) {
+  background-color: rgb(39, 39, 39);
+}
+.row:nth-child(even) .square:nth-child(odd) {
+  background-color: rgb(39, 39, 39);
+}
+.board-numbers {
+  margin-top: 20px;
+  height: calc(52px * 8);
+  display: flex;
+  flex-direction: column;
+}
+.board-number,
+.board-letter {
+  padding: 0;
+  margin: 0;
+  width: 50px;
+  height: calc(100% / 8);
+  justify-content: space-between;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.board-letters {
+  width: calc(52px * 8);
+  display: flex;
+  justify-content: space-between;
 }
