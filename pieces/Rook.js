@@ -8,86 +8,133 @@ export default class Rook {
     this.prevSquare = "";
   }
   //pos=[x,y] ocupied=false or true up on the board is - in the list
-  legalMove(board, pos) {
-    const possibleMoves = [];
+  possibleMoves(board) {
+    let possibleMoves = [];
     let counter = 0;
     let switch1 = true;
     let switch2 = true;
     let switch3 = true;
     let switch4 = true;
-    if (this.currentSquare[0] != pos[0] && this.currentSquare[1] != pos[1]) {
-      console.log("invalid move!");
-      return false;
-    }
-    if (this.currentSquare[0] == pos[0] && this.currentSquare[1] != pos[1]) {
-      for (let i = this.currentSquare[1]; i < pos[1]; i++) {
-        counter++;
-        if (switch1) {
-          possibleMoves.push([
-            this.currentSquare[0],
-            this.currentSquare[1] + counter,
-          ]);
+    for (let i = this.currentSquare[1]; i < board.length - 1; i++) {
+      counter++;
+      console.log("rigth");
+      if (
+        this.currentSquare[1] + counter < board.length - 1 &&
+        board[this.currentSquare[0]][this.currentSquare[1] + counter][0]
+      ) {
+        if (
+          board[this.currentSquare[0]][this.currentSquare[1] + counter][0]
+            .color !== this.color
+        ) {
+          if (switch1) {
+            possibleMoves.push([
+              this.currentSquare[0],
+              this.currentSquare[1] + counter,
+            ]);
+          }
         }
-
-        if (board[this.currentSquare[0]][this.currentSquare[1] + counter][0]) {
-          switch1 = false;
-        }
+        switch1 = false;
       }
-      counter = 0;
-      for (let i = pos[1]; i < this.currentSquare[1]; i++) {
-        counter++;
-        if (switch2) {
-          possibleMoves.push([
-            this.currentSquare[0],
-            this.currentSquare[1] - counter,
-          ]);
-        }
-
-        if (board[this.currentSquare[0]][this.currentSquare[1] - counter][0]) {
-          switch2 = false;
-        }
+      if (switch1) {
+        possibleMoves.push([
+          this.currentSquare[0],
+          this.currentSquare[1] + counter,
+        ]);
       }
-    }
-    if (this.currentSquare[0] != pos[0] && this.currentSquare[1] == pos[1]) {
     }
     counter = 0;
-    for (let i = this.currentSquare[0]; i < pos[0]; i++) {
+    for (let i = 0; i < this.currentSquare[1]; i++) {
       counter++;
+      console.log("left");
+      if (
+        this.currentSquare[1] - counter < board.length - 1 &&
+        board[this.currentSquare[0]][this.currentSquare[1] - counter][0]
+      ) {
+        if (
+          board[this.currentSquare[0]][this.currentSquare[1] - counter][0]
+            .color !== this.color
+        ) {
+          if (switch2) {
+            possibleMoves.push([
+              this.currentSquare[0],
+              this.currentSquare[1] - counter,
+            ]);
+          }
+        }
+        switch2 = false;
+      }
+      if (switch2) {
+        possibleMoves.push([
+          this.currentSquare[0],
+          this.currentSquare[1] - counter,
+        ]);
+      }
+    }
+
+    counter = 0;
+    for (let i = this.currentSquare[0]; i < board.length - 1; i++) {
+      counter++;
+      if (
+        this.currentSquare[0] + counter < board.length - 1 &&
+        board[this.currentSquare[0] + counter][this.currentSquare[1]][0]
+      ) {
+        if (
+          board[this.currentSquare[0] + counter][this.currentSquare[1]][0]
+            .color !== this.color
+        ) {
+          if (switch3) {
+            possibleMoves.push([
+              this.currentSquare[0] + counter,
+              this.currentSquare[1],
+            ]);
+          }
+        }
+        switch3 = false;
+      }
       if (switch3) {
         possibleMoves.push([
           this.currentSquare[0] + counter,
           this.currentSquare[1],
         ]);
       }
-
-      if (board[this.currentSquare[0] + counter][this.currentSquare[1]][0]) {
-        switch3 = false;
-      }
     }
     counter = 0;
-    for (let i = pos[0]; i < this.currentSquare[0]; i++) {
+    for (let i = 0; i < this.currentSquare[0]; i++) {
       counter++;
+
+      if (
+        this.currentSquare[0] - counter >= 0 &&
+        board[this.currentSquare[0] - counter][this.currentSquare[1]][0]
+      ) {
+        if (
+          board[this.currentSquare[0] - counter][this.currentSquare[1]][0]
+            .color !== this.color
+        ) {
+          if (switch4) {
+            possibleMoves.push([
+              this.currentSquare[0] - counter,
+              this.currentSquare[1],
+            ]);
+          }
+        }
+        switch4 = false;
+      }
       if (switch4) {
         possibleMoves.push([
           this.currentSquare[0] - counter,
           this.currentSquare[1],
         ]);
       }
+    }
 
-      if (board[this.currentSquare[0] - counter][this.currentSquare[1]][0]) {
-        switch4 = false;
-      }
+    if (possibleMoves.length > 0) {
+      return possibleMoves;
+    } else {
+      return false;
     }
-    for (let i = 0; i < possibleMoves.length; i++) {
-      if (possibleMoves[i][0] == pos[0] && possibleMoves[i][1] == pos[1]) {
-        console.log("valid move");
-        this.prevSquare = this.currentSquare;
-        this.currentSquare = pos;
-        console.log(this.currentSquare, "current square");
-        return true;
-      }
-    }
-    console.log("invalid move!");
-    return false;
+  }
+  move(pos) {
+    this.prevSquare = this.currentSquare;
+    this.currentSquare = pos;
   }
 }

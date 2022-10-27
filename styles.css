@@ -4,55 +4,66 @@ body {
   align-items: center;
   justify-content: center;
 }
-#chess-container {
+#chess-board {
   height: fit-content;
   display: flex;
-  max-width: calc(50px * 8);
+  transform: rotateX(180deg);
+}
+.chess-container {
+  display: flex;
 }
 .piece {
   max-width: 45px;
   max-height: 45px;
+  transform: rotateX(180deg);
 }
 
 .black-piece {
   color: black;
 }
+
 .square {
   width: 50px;
   height: 50px;
   background-color: rgb(242, 242, 242);
-  border: 1px solid transparent;
+  border: 2px dashed transparent;
+  border-radius: 5px;
+  margin: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
+
 .row:nth-child(odd) .square:nth-child(even) {
   background-color: rgb(39, 39, 39);
 }
 .row:nth-child(even) .square:nth-child(odd) {
   background-color: rgb(39, 39, 39);
 }
-.board-numbers {
-  margin-top: 20px;
-  height: calc(52px * 8);
+
+.board-numbers,
+.board-letters {
   display: flex;
+  justify-content: space-around;
+}
+.board-letters {
+  width: 100%;
+}
+.board-numbers {
+  margin-top: auto;
+  height: calc(55px * 8);
   flex-direction: column;
 }
 .board-number,
 .board-letter {
-  padding: 0;
   margin: 0;
-  width: 50px;
-  height: calc(100% / 8);
-  justify-content: space-between;
+  border: 1px solid black;
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
   display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
-}
-.board-letters {
-  width: calc(52px * 8);
-  display: flex;
-  justify-content: space-between;
 }

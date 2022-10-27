@@ -1,8 +1,11 @@
 import Bishop from "./pieces/Bishop.js";
+import King from "./pieces/King.js";
+import Knight from "./pieces/Knight.js";
 import Pawn from "./pieces/Pawn.js";
+import Queen from "./pieces/Queen.js";
 import Rook from "./pieces/Rook.js";
 
-const chessContainer = document.querySelector("#chess-container");
+const chessContainer = document.querySelector("#chess-board");
 
 const board = [
   [[], [], [], [], [], [], [], []],
@@ -15,20 +18,32 @@ const board = [
   [[], [], [], [], [], [], [], []],
 ];
 const pawns = [];
-
-const newBishop = new Bishop([0, 0], true);
+let possibleMoves = [];
+const newBishop = new Bishop([4, 1], false);
 const newRook = new Rook([5, 5], false);
+const testPawn = new Pawn([1, 3], false);
+const testQueen = new Queen([3, 4], true);
+const testKing = new King([4, 3], true);
+const testKnight = new Knight([2, 5], true);
 makeMove(board, newBishop);
 makeMove(board, newRook);
-
+makeMove(board, testPawn);
+makeMove(board, testQueen);
+makeMove(board, testKing);
+makeMove(board, testKnight);
 for (let i = 0; i < 8; i++) {
-  const newPawn = new Pawn([6, i], true);
+  const newPawn = new Pawn([1, i], true);
+  makeMove(board, newPawn);
+  pawns.push(newPawn);
+}
+for (let i = 0; i < 8; i++) {
+  const newPawn = new Pawn([6, i], false);
   makeMove(board, newPawn);
   pawns.push(newPawn);
 }
 let selectedSquare = "";
 let prevSelectedSquare = "";
-let selectedpiece = "";
+let selectedPiece = "";
 board.forEach((row, i) => {
   chessContainer.innerHTML += `<div class="row" id="row-${i + 1}"></div>`;
   const rowContainer = document.querySelector(`#row-${i + 1}`);
@@ -45,26 +60,35 @@ squares.forEach((sq) => {
 });
 function handleClick() {
   const pos = deconstructId(this.id);
+  if (possibleMoves.length > 0) {
+    possibleMoves.forEach((move) => {
+      if (move[0] == pos[0] && move[1] == pos[1]) {
+        selectedPiece.move(pos);
+        makeMove(board, selectedPiece);
+      }
+    });
+  }
+  if (
+    (board[pos[0]][pos[1]][0] && !selectedPiece) ||
+    (board[pos[0]][pos[1]][0] && !possibleMoves.includes(pos))
+  ) {
+    selectedPiece = board[pos[0]][pos[1]][0];
+    selectedSquare = "";
+  }
 
   if (selectedSquare == this) {
     selectedSquare = "";
+    selectedPiece = "";
   } else {
     prevSelectedSquare = selectedSquare;
     selectedSquare = this;
   }
-  if (selectedpiece && selectedSquare) {
-    if (selectedpiece.legalMove(board, deconstructId(selectedSquare.id))) {
-      console.log(
-        board[selectedpiece.currentSquare[0]][selectedpiece.currentSquare[1]]
-      );
-      makeMove(board, selectedpiece);
-      selectedpiece = "";
-      selectedSquare = "";
+  if (selectedPiece) {
+    if (selectedPiece.possibleMoves(board)) {
+      possibleMoves = selectedPiece.possibleMoves(board);
     }
-  }
-  if (board[pos[0]][pos[1]][0]) {
-    selectedpiece = board[pos[0]][pos[1]][0];
-    selectedSquare = "";
+  } else {
+    selectedPiece = "";
   }
 
   updateBoard(chessContainer, board);
@@ -80,13 +104,18 @@ function updateBoard(display, list) {
       }
     });
   });
-  if (selectedSquare) {
-    selectedSquare.style.borderColor = "green";
-  }
+  possibleMoves.forEach((move) => {
+    display.children[move[1]].children[move[0]].style.borderColor = "green";
+  });
 }
 updateBoard(chessContainer, board);
 function deconstructId(id) {
   return [parseInt(id.split("")[1] - 1), id.split("")[0].charCodeAt(0) - 97];
+}
+function constructId(id) {
+  const letternum = id[0] + 97;
+  const num = id[1] + 1;
+  return String.fromCharCode(letternum) + num.toString();
 }
 function checkSquare(square) {
   if (board[square[0]][square[1]].length > 0) return true;
@@ -96,7 +125,6 @@ function possiblemoves(piece) {
   const possibleMoves = [];
   if (board[piece.currentSquare[0] + 1][piece.currentSquare[1]].length > 0) {
     possibleMoves.push([piece.currentSquare[0] + 1, piece.currentSquare[1]]);
-    console.log(possibleMoves);
   }
 }
 function makeMove(board, piece) {
