@@ -1,7 +1,9 @@
 import Bishop from "./pieces/Bishop.js";
 import King from "./pieces/King.js";
+
 import Knight from "./pieces/Knight.js";
 import Pawn from "./pieces/Pawn.js";
+
 import Queen from "./pieces/Queen.js";
 import Rook from "./pieces/Rook.js";
 
@@ -17,29 +19,88 @@ const board = [
   [[], [], [], [], [], [], [], []],
   [[], [], [], [], [], [], [], []],
 ];
-const pawns = [];
+//0=Rook
+//1=Bishop
+//2=Knight
+//3=Queen
+//4=King
+const pieceOrder = [0, 1, 2, 3, 4, 2, 1, 0];
+const pieces = [];
 let possibleMoves = [];
-const newBishop = new Bishop([4, 1], false);
-const newRook = new Rook([5, 5], false);
-const testPawn = new Pawn([1, 3], false);
-const testQueen = new Queen([3, 4], true);
-const testKing = new King([4, 3], true);
-const testKnight = new Knight([2, 5], true);
-makeMove(board, newBishop);
-makeMove(board, newRook);
-makeMove(board, testPawn);
-makeMove(board, testQueen);
-makeMove(board, testKing);
-makeMove(board, testKnight);
+let turn = true;
+for (let i = 0; i < 8; i++) {
+  console.log(pieceOrder[i]);
+  switch (pieceOrder[i]) {
+    case 0:
+      const rook = new Rook([0, i], true);
+      makeMove(board, rook);
+      pieces.push(rook);
+      console.log(rook);
+      break;
+
+    case 1:
+      const bishop = new Bishop([0, i], true);
+      makeMove(board, bishop);
+      pieces.push(bishop);
+      break;
+    case 2:
+      const knight = new Knight([0, i], true);
+      makeMove(board, knight);
+      pieces.push(knight);
+      break;
+    case 3:
+      const queen = new Queen([0, i], true);
+      makeMove(board, queen);
+      pieces.push(queen);
+      break;
+    case 4:
+      const king = new King([0, i], true);
+      makeMove(board, king);
+      pieces.push(king);
+      break;
+  }
+}
+
+for (let i = 0; i < 8; i++) {
+  switch (pieceOrder[i]) {
+    case 0:
+      const rook = new Rook([7, i], false);
+      makeMove(board, rook);
+      pieces.push(rook);
+      console.log(rook);
+      break;
+
+    case 1:
+      const bishop = new Bishop([7, i], false);
+      makeMove(board, bishop);
+      pieces.push(bishop);
+      break;
+    case 2:
+      const knight = new Knight([7, i], false);
+      makeMove(board, knight);
+      pieces.push(knight);
+      break;
+    case 3:
+      const queen = new Queen([7, i], false);
+      makeMove(board, queen);
+      pieces.push(queen);
+      break;
+    case 4:
+      const king = new King([7, i], false);
+      makeMove(board, king);
+      pieces.push(king);
+      break;
+  }
+}
 for (let i = 0; i < 8; i++) {
   const newPawn = new Pawn([1, i], true);
   makeMove(board, newPawn);
-  pawns.push(newPawn);
+  pieces.push(newPawn);
 }
 for (let i = 0; i < 8; i++) {
   const newPawn = new Pawn([6, i], false);
   makeMove(board, newPawn);
-  pawns.push(newPawn);
+  pieces.push(newPawn);
 }
 let selectedSquare = "";
 let prevSelectedSquare = "";
@@ -65,6 +126,11 @@ function handleClick() {
       if (move[0] == pos[0] && move[1] == pos[1]) {
         selectedPiece.move(pos);
         makeMove(board, selectedPiece);
+        turn = turn ? false : true;
+        selectedPiece = "";
+        possibleMoves = [];
+        updateBoard(chessContainer, board);
+        return;
       }
     });
   }
@@ -72,7 +138,12 @@ function handleClick() {
     (board[pos[0]][pos[1]][0] && !selectedPiece) ||
     (board[pos[0]][pos[1]][0] && !possibleMoves.includes(pos))
   ) {
-    selectedPiece = board[pos[0]][pos[1]][0];
+    if (turn == board[pos[0]][pos[1]][0].color) {
+      selectedPiece = board[pos[0]][pos[1]][0];
+    } else {
+      console.log("not your turn");
+    }
+
     selectedSquare = "";
   }
 
