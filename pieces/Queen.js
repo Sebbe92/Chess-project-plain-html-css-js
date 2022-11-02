@@ -6,6 +6,7 @@ export default class Queen {
       ? `<img class="piece white-piece" src="./pieces/images/white-queen.svg"/>`
       : `<img class="piece black-piece" src="./pieces/images/black-queen.svg"/>`;
     this.prevSquare = "";
+    this.name = "queen";
   }
   //pos=[x,y] ocupied=false or true up on the board is - in the list
   possibleMoves(board) {
@@ -230,7 +231,7 @@ export default class Queen {
     counter = 0;
     for (let i = 0; i < this.currentSquare[0]; i++) {
       counter++;
-      console.log(counter);
+
       if (
         this.currentSquare[0] - counter >= 0 &&
         board[this.currentSquare[0] - counter][this.currentSquare[1]][0]
@@ -265,5 +266,10 @@ export default class Queen {
   move(pos) {
     this.prevSquare = this.currentSquare;
     this.currentSquare = pos;
+  }
+  redo() {
+    const p = this.currentSquare;
+    this.currentSquare = this.prevSquare;
+    this.prevSquare = p;
   }
 }

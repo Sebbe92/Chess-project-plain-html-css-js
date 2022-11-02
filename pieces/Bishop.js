@@ -6,6 +6,7 @@ export default class Bishop {
       ? `<img class="piece white-piece" src="./pieces/images/white-bishop.svg"/>`
       : `<img class="piece black-piece" src="./pieces/images/black-bishop.svg"/>`;
     this.prevSquare = "";
+    this.name = "bishop";
   }
   //pos=[x,y] ocupied=false or true up on the board is - in the list
   possibleMoves(board) {
@@ -148,5 +149,10 @@ export default class Bishop {
   move(pos) {
     this.prevSquare = this.currentSquare;
     this.currentSquare = pos;
+  }
+  redo() {
+    const p = this.currentSquare;
+    this.currentSquare = this.prevSquare;
+    this.prevSquare = p;
   }
 }

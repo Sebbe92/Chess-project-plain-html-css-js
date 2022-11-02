@@ -6,6 +6,7 @@ export default class Rook {
       ? `<img class="piece white-piece" src="./pieces/images/white-rook.svg"/>`
       : `<img class="piece black-piece" src="./pieces/images/black-rook.svg"/>`;
     this.prevSquare = "";
+    this.name = "rook";
   }
   //pos=[x,y] ocupied=false or true up on the board is - in the list
   possibleMoves(board) {
@@ -17,7 +18,7 @@ export default class Rook {
     let switch4 = true;
     for (let i = this.currentSquare[1]; i < board.length - 1; i++) {
       counter++;
-      console.log("rigth");
+
       if (
         this.currentSquare[1] + counter < board.length - 1 &&
         board[this.currentSquare[0]][this.currentSquare[1] + counter][0]
@@ -45,7 +46,6 @@ export default class Rook {
     counter = 0;
     for (let i = 0; i < this.currentSquare[1]; i++) {
       counter++;
-      console.log("left");
       if (
         this.currentSquare[1] - counter < board.length - 1 &&
         board[this.currentSquare[0]][this.currentSquare[1] - counter][0]
@@ -136,5 +136,10 @@ export default class Rook {
   move(pos) {
     this.prevSquare = this.currentSquare;
     this.currentSquare = pos;
+  }
+  redo() {
+    const p = this.currentSquare;
+    this.currentSquare = this.prevSquare;
+    this.prevSquare = p;
   }
 }

@@ -72,3 +72,37 @@ body {
   text-align: center;
   align-items: center;
 }
+
+.controls {
+  background-color: gray;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid black;
+  margin: 10px;
+}
+.controls button {
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 5px 10px;
+}
+.controls button:hover {
+  background-color: aliceblue;
+  border-radius: 3px;
+  border: 1px solid rgb(249, 249, 249);
+  padding: 5px 10px;
+}
+
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+  }
+  .controls {
+    flex-direction: row;
+    height: fit-content;
+    width: 200px;
+  }
+}

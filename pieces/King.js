@@ -6,6 +6,7 @@ export default class King {
       ? `<img class="piece white-piece" src="./pieces/images/white-king.svg"/>`
       : `<img class="piece black-piece" src="./pieces/images/black-king.svg"/>`;
     this.prevSquare = "";
+    this.name = "king";
   }
   //pos=[x,y] ocupied=false or true up on the board is - in the list
   possibleMoves(board) {
@@ -120,7 +121,6 @@ export default class King {
       ]);
     }
     if (possibleMoves.length > 0) {
-      console.log(possibleMoves);
       return possibleMoves;
     } else {
       console.log("no moves");
@@ -129,5 +129,10 @@ export default class King {
   move(pos) {
     this.prevSquare = this.currentSquare;
     this.currentSquare = pos;
+  }
+  redo() {
+    const p = this.currentSquare;
+    this.currentSquare = this.prevSquare;
+    this.prevSquare = p;
   }
 }
